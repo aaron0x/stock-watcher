@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <cstring>
+#include <stdexcept>
 
 using namespace std;
 
@@ -39,8 +40,8 @@ void Config::checkPrice()
       }
 
       // Add notified stock into notified list.
-      if (!nofitiedList_.empty()) {
-         watcher_.appendOutConditionIDs(nofitiedList_);
+      if (!notifiedList_.empty()) {
+         watcher_.appendOutConditionIDs(notifiedList_);
       }
    } catch (const exception &e) {
       if (errorLog_) {
@@ -108,8 +109,11 @@ void Config::setNotifiedStock(const Map &items)
       return;
    }
 
-   nofitiedList_ = it->second;
-   ifstream notified(nofitiedList_);
+   notifiedList_ = it->second;
+   // Use ofstream to avoid the file doesn't exist in the first excution.
+   ofstream of(notifiedList_);
+   of.close();
+   ifstream notified(notifiedList_);
    if (!notified) {
       throw runtime_error("Can't open notified list:" + it->second);
    }

@@ -46,7 +46,7 @@ private:
 
    std::ofstream errorLog_;
 
-   std::string nofitiedList_;
+   std::string notifiedList_;
 
    std::set<std::string> notifiedStock_;
 

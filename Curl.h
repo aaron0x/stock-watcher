@@ -3,6 +3,7 @@
 
 #include <curl/curl.h>
 
+#include <stdexcept>
 #include <memory>
 
 class Curl
