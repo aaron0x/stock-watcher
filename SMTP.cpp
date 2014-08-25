@@ -1,3 +1,10 @@
+/****************************************************
+ *** Copyright (c) 2014 Aaron aaron1126@gmail.com ***
+ ***                                              ***
+ *** See the file LICENSE for copying permission. ***
+****************************************************/
+
+
 #include "SMTP.h"
 #include "Curl.h"
 

@@ -1,3 +1,10 @@
+/****************************************************
+ *** Copyright (c) 2014 Aaron aaron1126@gmail.com ***
+ ***                                              ***
+ *** See the file LICENSE for copying permission. ***
+****************************************************/
+
+
 #ifndef WATCHCONDITOIN_H
 #define WATCHCONDITOIN_H
 

@@ -1,3 +1,10 @@
+/****************************************************
+ *** Copyright (c) 2014 Aaron aaron1126@gmail.com ***
+ ***                                              ***
+ *** See the file LICENSE for copying permission. ***
+****************************************************/
+
+
 #ifndef PRICEWATCHER_H
 #define PRICEWATCHER_H
 
