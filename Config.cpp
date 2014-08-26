@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "SMTP.h"
 
+#include <unistd.h>
 #include <sstream>
 #include <cstring>
 #include <stdexcept>
@@ -117,9 +118,10 @@ void Config::setNotifiedStock(const Map &items)
    }
 
    notifiedList_ = it->second;
-   // Use ofstream to avoid the file doesn't exist in the first excution.
-   ofstream of(notifiedList_);
-   of.close();
+   if (access(notifiedList_.c_str(), R_OK) == -1) {
+      return;
+   }
+
    ifstream notified(notifiedList_);
    if (!notified) {
       throw runtime_error("Can't open notified list:" + it->second);
