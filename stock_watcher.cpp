@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 
    try {
       Config config(optarg);
-      config.load();
       config.checkPrice();
    } catch (const exception &e) {
       cerr << "caught exception: " << e.what() << endl;

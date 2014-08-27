@@ -10,6 +10,7 @@
 #include "Curl.h"
 #include "WatchCondition.h"
 
+#include <stdexcept>
 #include <sstream>
 #include <fstream>
 #include <thread>
@@ -29,6 +30,10 @@ PriceWatcher::~PriceWatcher()
 void PriceWatcher::addWatch(const string &stockID, const string &lowerPrice,
                             const string &upperPrice)
 {
+   if (stockID.empty() || lowerPrice.empty() || upperPrice.empty()) {
+      throw invalid_argument("error watch target!");
+   }
+
    watchConditions_.push_back(UPtrWatchCondition(new WatchCondition(stockID, lowerPrice, upperPrice)));
 }
 
@@ -40,6 +45,10 @@ void PriceWatcher::addWatch(const string &stockID, const string &lowerPrice,
 // http://finance.yahoo.com/d/quotes.csv?s=2727.TW+1565.TWO&f=l1
 void PriceWatcher::checkPrice(SMTP *smtp)
 {
+   if (!smtp) {
+      throw invalid_argument("NULL smtp!");
+   }
+
    const int RETRY_TIME   = 100;
    const int SLEEP_SECOND = 3;
 

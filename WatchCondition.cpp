@@ -18,6 +18,11 @@ using namespace std;
 WatchCondition::WatchCondition(const string &stockID, const string &lowerPrice,
                                const string &upperPrice) : stockID_(stockID)
 {
+   if (stockID.empty() || lowerPrice.empty() || upperPrice.empty()) {
+      throw invalid_argument("WatchCondition create error: " + stockID +
+                             " " + lowerPrice + " " + upperPrice);
+   }
+
    lowerPrice_ = strtof(lowerPrice.c_str(), nullptr);
    upperPrice_ = strtof(upperPrice.c_str(), nullptr);
 

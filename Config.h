@@ -26,12 +26,12 @@ public:
 
    ~Config();
 
-   void load();
-
    void checkPrice();
 
 private:
    static const int MAX_NAME_VALUE_LENGTH = 128;
+
+   void load();
 
    void parseConfig(std::ifstream *configFile, Map *items);
 

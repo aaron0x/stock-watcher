@@ -19,6 +19,9 @@ const string SMTP::NEW_LINE = "\r\n";
 SMTP::SMTP(const string &smtp, const string &user, const string &password)
    : smtp_(smtp), user_(user), password_(password)
 {
+   if (smtp_.empty()) {
+      throw runtime_error("empty smtp address!");
+   }
 }
 
 SMTP::~SMTP()
@@ -63,6 +66,11 @@ bool SMTP::emptyContent() const
 // TODO: Check address format.
 void SMTP::send(const string &address)
 {
+   if (address.empty()) {
+      throw runtime_error("send smtp to empty address!");
+   }
+
+
    if (emptyContent()) {
       throw runtime_error("send empty mail!");
    }

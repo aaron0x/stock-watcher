@@ -20,6 +20,8 @@ Config::Config(const char *path) : path_(path)
    if (!path || path[0] == '\0') {
       throw invalid_argument("Configuration file path is wrong!");
    }
+
+   load();
 }
 
 Config::~Config()
