@@ -32,6 +32,11 @@ WatchCondition::WatchCondition(const string &stockID, const string &lowerPrice,
    }
 }
 
+WatchCondition::WatchCondition(WatchCondition &&other)
+   : stockID_(move(other.stockID_)), lowerPrice_(other.lowerPrice_), upperPrice_(other.upperPrice_)
+{
+}
+
 WatchCondition::~WatchCondition()
 {
 }

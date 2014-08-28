@@ -34,7 +34,7 @@ void PriceWatcher::addWatch(const string &stockID, const string &lowerPrice,
       throw invalid_argument("error watch target!");
    }
 
-   watchConditions_.push_back(UPtrWatchCondition(new WatchCondition(stockID, lowerPrice, upperPrice)));
+   watchConditions_.push_back(WatchCondition(stockID, lowerPrice, upperPrice));
 }
 
 // For unknown reason, YAHOO API failed from time to time.
@@ -59,7 +59,7 @@ void PriceWatcher::checkPrice(SMTP *smtp)
          target += "+";
       }
 
-      target += t->stockID();
+      target += t.stockID();
    }
 
    // Send request.
@@ -118,9 +118,9 @@ size_t PriceWatcher::handleResponse(char *buffer, size_t size, size_t num, void 
          float price = 0;
          response >> price;
 
-         if (w->isOutConditon(price)) {
-            smtp->appendBodyWithNewLine(w->outConditionMessage(price));
-            outConditionIDs.push_back(w->stockID());
+         if (w.isOutConditon(price)) {
+            smtp->appendBodyWithNewLine(w.outConditionMessage(price));
+            outConditionIDs.push_back(w.stockID());
             needNotify = true;
          }
       }

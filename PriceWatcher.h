@@ -9,7 +9,6 @@
 #define PRICEWATCHER_H
 
 #include <string>
-#include <memory>
 #include <vector>
 
 class SMTP;
@@ -30,8 +29,6 @@ public:
    void appendOutConditionIDs(const std::string path);
 
 private:
-   typedef std::unique_ptr<WatchCondition> UPtrWatchCondition ;
-
    typedef struct Data {
       PriceWatcher *self;
       SMTP *smtp;
@@ -39,7 +36,7 @@ private:
 
    static size_t handleResponse(char *buffer, size_t size, size_t num, void *userData);
 
-   std::vector<UPtrWatchCondition> watchConditions_;
+   std::vector<WatchCondition> watchConditions_;
 
    std::vector<std::string> outConditionIDs_;
 };

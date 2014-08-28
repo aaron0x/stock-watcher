@@ -16,6 +16,8 @@ public:
    WatchCondition(const std::string &stockID, const std::string &lowerPrice,
                   const std::string &upperPrice);
 
+   WatchCondition(WatchCondition &&other);
+
    ~WatchCondition();
 
    const std::string &stockID() const;
