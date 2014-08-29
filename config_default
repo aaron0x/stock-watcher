@@ -13,16 +13,16 @@ notify_mail=aaron@gmail.com
 # Optional parameters
 
 # stock=ID lower_price upper_price
-stock=2727.TW 500 1100
-stock=1565.TWO 700 1000
-stock=GOOG 700 1000
+#stock=2727.TW 500 1100
+#stock=1565.TWO 700 1000
+#stock=GOOG 700 1000
 
 # Where to wirte error log
-error_log=error_log
+#error_log=error_log
 
 # Where to save these notified stocks
 # If notified_list is not set, watcher will send email each time the price is out of range
-notified_list=notified_list
+#notified_list=notified_list
 # gmal need sets "access for less secure apps"
 
 # Optional parameters end
