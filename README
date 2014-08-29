@@ -1,0 +1,11 @@
+stock-watcher
+=============
+
+A program retrieves stock price and sends notification mail 
+when the stock price is out of the range in config file.
+
+Dependencies
+=============
+libcurl
+GNU C Library
+compiler supports c++11
