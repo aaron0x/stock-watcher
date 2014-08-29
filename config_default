@@ -13,6 +13,7 @@ notify_mail=aaron@gmail.com
 # Optional parameters
 
 # stock=ID lower_price upper_price
+# Sufix reference: http://www.jarloo.com/yahoo_finance/
 #stock=2727.TW 500 1100
 #stock=1565.TWO 700 1000
 #stock=GOOG 700 1000

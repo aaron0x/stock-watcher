@@ -9,3 +9,5 @@ Dependencies
 libcurl
 GNU C Library
 compiler supports c++11
+
+Yahoo finance API reference: http://www.jarloo.com/yahoo_finance/
