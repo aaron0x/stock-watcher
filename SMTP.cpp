@@ -17,9 +17,9 @@ const string SMTP::NEW_LINE = "\r\n";
 
 // TODO: Check smtp format.
 SMTP::SMTP(const string &smtp, const string &user, const string &password)
-   : smtp_(smtp), user_(user), password_(password)
+   : smtp_("smtp://" + smtp), user_(user), password_(password)
 {
-   if (smtp_.empty()) {
+   if (smtp.empty()) {
       throw runtime_error("empty smtp address!");
    }
 }
