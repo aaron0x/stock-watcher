@@ -11,3 +11,7 @@ GNU C Library
 compiler supports c++11
 
 Yahoo finance API reference: http://www.jarloo.com/yahoo_finance/
+
+Use
+=============
+./stock_watcher -c config_file_path
