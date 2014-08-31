@@ -1,5 +1,5 @@
-CXXFLAGS  = -Wall -Werror -std=c++11
-LOADLIBES = -lcurl
+CXXFLAGS  ?= -O2 -Wall -Werror -std=c++11
+LOADLIBES := -lcurl
 
 stock_watcher: stock_watcher.cpp Config.o PriceWatcher.o WatchCondition.o SMTP.o Curl.o
 
