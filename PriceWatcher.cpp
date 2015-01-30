@@ -6,7 +6,6 @@
 
 
 #include "PriceWatcher.h"
-#include "SMTP.h"
 #include "Curl.h"
 #include "WatchCondition.h"
 
@@ -35,6 +34,8 @@ void PriceWatcher::addWatch(const string &stockID, const string &lowerPrice,
    }
 
    watchConditions_.push_back(WatchCondition(stockID, lowerPrice, upperPrice));
+
+   outPriceWatchConditions_.clear();
 }
 
 // For unknown reason, YAHOO API failed from time to time.
@@ -43,12 +44,8 @@ void PriceWatcher::addWatch(const string &stockID, const string &lowerPrice,
 // b3:Last Trade Price Only
 // http://finance.yahoo.com/d/quotes.csv?s=1565.TWO&f=l1
 // http://finance.yahoo.com/d/quotes.csv?s=2727.TW+1565.TWO&f=l1
-void PriceWatcher::checkPrice(SMTP *smtp)
+void PriceWatcher::checkPrice()
 {
-   if (!smtp) {
-      throw invalid_argument("NULL smtp!");
-   }
-
    const int RETRY_TIME   = 100;
    const int SLEEP_SECOND = 3;
 
@@ -66,12 +63,11 @@ void PriceWatcher::checkPrice(SMTP *smtp)
    for (int i = 0; i < RETRY_TIME; i++) {
       Curl curl;
       string url    = "http://finance.yahoo.com/d/quotes.csv?s=" + target + "&f=l1";
-      Data userData = { .self = this, .smtp = smtp };
-
+      
       curl.setOption(CURLOPT_FOLLOWLOCATION, 1);
       curl.setOption(CURLOPT_URL,            url.c_str());
       curl.setOption(CURLOPT_WRITEFUNCTION,  handleResponse);
-      curl.setOption(CURLOPT_WRITEDATA,      &userData);
+      curl.setOption(CURLOPT_WRITEDATA,      this);
       curl.setOption(CURLOPT_FAILONERROR,    1);
 
       try {
@@ -87,46 +83,52 @@ void PriceWatcher::checkPrice(SMTP *smtp)
    }
 }
 
-void PriceWatcher::appendOutConditionIDs(const string path)
+bool PriceWatcher::hasOutPriceCondition() const {
+   return !outPriceWatchConditions_.empty();
+}
+
+void PriceWatcher::appendOutConditionIDs(const string path) const
 {
    ofstream notifiedList(path, ios_base::out | ios_base::app);
    if (!notifiedList) {
       throw runtime_error("Can't open notified list:" + path);
    }
 
-   for (const auto &id : outConditionIDs_) {
-      notifiedList << id << endl;
+   for (auto o : outPriceWatchConditions_) {
+      notifiedList << o.first->stockID() << endl;
    }
+}
+
+string PriceWatcher::composeOutConditionMessage() const {
+   stringstream message;
+
+   for (auto w : outPriceWatchConditions_) {
+      message << w.first->outConditionMessage(w.second) << endl;
+   }
+
+   return message.str();
 }
 
 size_t PriceWatcher::handleResponse(char *buffer, size_t size, size_t num, void *userData)
 {
    size_t total = size * num;
-   Data *data   = static_cast<Data *>(userData);
-   if (!buffer || total == 0 || !data) {
+   PriceWatcher *self   = static_cast<PriceWatcher*>(userData);
+   if (!buffer || total == 0 || !self) {
       return 0;
    }
 
    try {
       stringstream response(string(buffer, total));
-      const auto   &watchConditions = data->self->watchConditions_;
-      auto         &outConditionIDs = data->self->outConditionIDs_;
-      SMTP         *smtp            = data->smtp;
-      bool         needNotify       = false;
+      auto         &watchConditions         = self->watchConditions_;
+      auto         &outPriceWatchConditions = self->outPriceWatchConditions_;
 
-      for (const auto &w : watchConditions) {
+      for (auto w = watchConditions.cbegin(); w != watchConditions.cend(); w++) {
          float price = 0;
          response >> price;
 
-         if (w.isOutConditon(price)) {
-            smtp->appendBodyWithNewLine(w.outConditionMessage(price));
-            outConditionIDs.push_back(w.stockID());
-            needNotify = true;
+         if (w->isOutConditon(price)) {
+            outPriceWatchConditions.emplace_back(w, price);
          }
-      }
-
-      if (needNotify) {
-         smtp->addHeader("Subject", "Stock Watcher");
       }
    } catch (...) {
       return 0;

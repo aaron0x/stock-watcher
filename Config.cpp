@@ -44,14 +44,19 @@ void Config::load()
 void Config::checkPrice()
 {
    try {
-      watcher_.checkPrice(smtp_.get());
-      if (!smtp_->emptyContent()) {
-         smtp_->send(mailToNotify_);
-      }
+      watcher_.checkPrice();
 
-      // Add notified stock into notified list.
-      if (!notifiedList_.empty()) {
-         watcher_.appendOutConditionIDs(notifiedList_);
+      if (watcher_.hasOutPriceCondition()) {
+         string message = watcher_.composeOutConditionMessage();
+
+         smtp_->addHeader("Subject", "Stock Watcher");
+         smtp_->appendBody(message);
+         smtp_->send(mailToNotify_);
+
+         // Add notified stock into notified list.
+         if (!notifiedList_.empty()) {
+            watcher_.appendOutConditionIDs(notifiedList_);
+         }
       }
    } catch (const exception &e) {
       if (errorLog_) {
@@ -99,7 +104,7 @@ void Config::parseLine(const char *line, Map *items)
       throw invalid_argument(string("Format of configuration file error: ") + line);
    }
 
-   items->insert(make_pair(key, value));
+   items->emplace(key, value);
 }
 
 void Config::setupObjects(const Map &items)

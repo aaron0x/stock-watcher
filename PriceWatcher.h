@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-class SMTP;
 class WatchCondition;
 
 class PriceWatcher
@@ -24,21 +23,23 @@ public:
    void addWatch(const std::string &stockID, const std::string &lowerPrice,
                  const std::string &upperPrice);
 
-   void checkPrice(SMTP *smtp);
+   void checkPrice();
 
-   void appendOutConditionIDs(const std::string path);
+   bool hasOutPriceCondition() const;
+
+   void appendOutConditionIDs(const std::string path) const;
+
+   std::string composeOutConditionMessage() const;
 
 private:
-   typedef struct Data {
-      PriceWatcher *self;
-      SMTP *smtp;
-   } Data;
-
    static size_t handleResponse(char *buffer, size_t size, size_t num, void *userData);
 
-   std::vector<WatchCondition> watchConditions_;
+   typedef std::vector<WatchCondition> WatchConditions;
+   typedef float CurrnetPrice;
 
-   std::vector<std::string> outConditionIDs_;
+   WatchConditions watchConditions_;
+
+   std::vector<std::pair<WatchConditions::const_iterator, CurrnetPrice>> outPriceWatchConditions_;
 };
 
 #endif /* PRICEWATCHER_H */
