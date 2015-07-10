@@ -32,7 +32,7 @@ public:
    void perform();
 
 private:
-   std::unique_ptr<CURL, void(*)(CURL *)> handle_ = { NULL, curl_easy_cleanup };
+   std::unique_ptr<CURL, void(*)(CURL *)> handle_;
 };
 
 #endif /* CURL_H */

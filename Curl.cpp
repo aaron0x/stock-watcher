@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Curl::Curl()
+Curl::Curl() : handle_(NULL, curl_easy_cleanup)
 {
    CURL *handle = curl_easy_init();
    atexit(curl_global_cleanup);

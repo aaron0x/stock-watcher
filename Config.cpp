@@ -104,7 +104,7 @@ void Config::parseLine(const char *line, Map *items)
       throw invalid_argument(string("Format of configuration file error: ") + line);
    }
 
-   items->emplace(key, value);
+   items->insert(make_pair(key, value));
 }
 
 void Config::setupObjects(const Map &items)

@@ -77,10 +77,11 @@ void SMTP::send(const string &address)
 
    Curl   curl;
    string message               = header() + NEW_LINE + body();
-   Data   data                  = {.message = message, .offset = 0 };
+   Data   data                  = { message, 0 };
    struct curl_slist *recipient = nullptr;
    recipient                    = curl_slist_append(recipient, address.c_str());
 
+   curl.setOption(CURLOPT_MAIL_FROM,    "aaron0000011111@yahoo.com.tw");
    curl.setOption(CURLOPT_USERNAME,     user_.c_str());
    curl.setOption(CURLOPT_PASSWORD,     password_.c_str());
    curl.setOption(CURLOPT_URL,          smtp_.c_str());
