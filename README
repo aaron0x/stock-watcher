@@ -8,7 +8,7 @@ Dependencies
 =============
 libcurl
 GNU C Library
-compiler supports c++11
+compiler supports C++11
 
 YQL: https://developer.yahoo.com/yql
 
