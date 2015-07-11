@@ -10,8 +10,8 @@ libcurl
 GNU C Library
 compiler supports c++11
 
-Yahoo finance API reference: http://www.jarloo.com/yahoo_finance/
+YQL: https://developer.yahoo.com/yql
 
-Use
+Usage
 =============
 ./stock_watcher -c config_file_path

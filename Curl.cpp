@@ -32,3 +32,11 @@ void Curl::perform()
       throw runtime_error(curl_easy_strerror(ret));
    }
 }
+
+string Curl::escape(const string &url)
+{
+   char *out = curl_easy_escape(handle_.get(), url.c_str(), url.size());
+   string result(out);
+   curl_free(out);
+   return result;
+}

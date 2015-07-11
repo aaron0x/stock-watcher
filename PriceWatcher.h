@@ -12,6 +12,7 @@
 #include <vector>
 
 class WatchCondition;
+class Curl;
 
 class PriceWatcher
 {
@@ -33,6 +34,9 @@ public:
 
 private:
    static size_t handleResponse(char *buffer, size_t size, size_t num, void *userData);
+
+   std::string composeUrl(Curl *curl);
+   void setCurlOption(Curl *curl, const std::string &url);
 
    typedef std::vector<WatchCondition> WatchConditions;
    typedef float CurrnetPrice;

@@ -12,6 +12,7 @@
 
 #include <stdexcept>
 #include <memory>
+#include <string>
 
 class Curl
 {
@@ -30,6 +31,8 @@ public:
    }
 
    void perform();
+
+   std::string escape(const std::string &url);
 
 private:
    std::unique_ptr<CURL, void(*)(CURL *)> handle_;
